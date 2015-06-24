@@ -61,6 +61,12 @@ perl_sync_dist
 perl_sub_signatures
     set to true
     prevents error highlighting of method arguments
+
+                                                   *dn-perl-setting-k-help*
+keywordprg
+    default is to search functions ('perldoc -f X')
+    set to search functions, variables, general and faq help
+        (perldoc -f -X || perldoc -v -X || perldoc -X || perldoc -q-X )
 -------------------------------------------------------------------------
                                                          *dn-perl-perltidy*
 5. Perltidy

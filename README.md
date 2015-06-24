@@ -39,6 +39,12 @@ set to true
 
 prevents error highlighting of method arguments
 
+###keywordprg
+
+default is to search functions (`perldoc -f X`)
+
+set to search functions, variables, general and faq help (`perldoc -f -X || perldoc -v -X || perldoc -X || perldoc -q-X`)
+
 Perltidy
 --------
 
