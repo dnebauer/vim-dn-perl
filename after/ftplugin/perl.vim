@@ -31,22 +31,22 @@ let b:dn_false = 0
 " SETTINGS                                                           {{{1
 
 " syntax                                                             {{{2
-" include pod.vim syntax file with perl.vim
+" include pod.vim syntax file with perl.vim                          
 let perl_include_pod   = 1
 " highlight complex expressions such as @{[$x, $y]}
 let perl_extended_vars = 1
 " use more context for highlighting
 let perl_sync_dist     = 250
 " prevent error highlighting of method arguments
-let g:perl_sub_signatures = b:dn_true
+let g:perl_sub_signatures = b:dn_true                              " }}}2
 " K help                                                             {{{2
 " - default = 'perldoc -f TERM'
 " - look in function, variable, general and faq help
 set keywordprg=f(){\ \
-            \     perldoc\ -f\ $* \
-            \ \|\ perldoc\ -v\ $* \
-            \ \|\ perldoc\     $* \
-            \ \|\ perldoc\ -q\ $* \
+            \ \ \ \ perldoc\ -f\ $*\ \
+            \ \|\|\ perldoc\ -v\ $*\ \
+            \ \|\|\ perldoc\ \ \ $*\ \
+            \ \|\|\ perldoc\ -q\ $*\ \
             \ ;\ }\ ;\ f
 
 " =======================================================================
