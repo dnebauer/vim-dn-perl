@@ -347,15 +347,15 @@ nmap <buffer> <unique> <Plug>DnT1N :call DNP_PerlCritic({'mode': 'normal', 'seve
 " Commands:                                                           {{{2
 
 " :Tidy                                                               {{{3
-command Tidy call DNP_PerlTidy({'mode': 'normal'})
+command! Tidy call DNP_PerlTidy({'mode': 'normal'})
 
 " :CriticX (where X is 1,2,3,4 or 5; default=5)                       {{{3
-command Critic  call DNP_PerlCritic({'mode': 'normal', 'severity': 5})
-command Critic5 call DNP_PerlCritic({'mode': 'normal', 'severity': 5})
-command Critic4 call DNP_PerlCritic({'mode': 'normal', 'severity': 4})
-command Critic3 call DNP_PerlCritic({'mode': 'normal', 'severity': 3})
-command Critic2 call DNP_PerlCritic({'mode': 'normal', 'severity': 2})
-command Critic1 call DNP_PerlCritic({'mode': 'normal', 'severity': 1})
+command! Critic  call DNP_PerlCritic({'mode': 'normal', 'severity': 5})
+command! Critic5 call DNP_PerlCritic({'mode': 'normal', 'severity': 5})
+command! Critic4 call DNP_PerlCritic({'mode': 'normal', 'severity': 4})
+command! Critic3 call DNP_PerlCritic({'mode': 'normal', 'severity': 3})
+command! Critic2 call DNP_PerlCritic({'mode': 'normal', 'severity': 2})
+command! Critic1 call DNP_PerlCritic({'mode': 'normal', 'severity': 1})
 
 " }}}1
 
