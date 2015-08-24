@@ -143,8 +143,7 @@ function! DNP_PerlTidy(params)
         return
     endif
 	" variable
-    let l:tidy_cmd = 'dn-perltidy'
-    let l:tidy_args = '-f'
+    let l:tidy = 'dn-perltidy'
     let l:mode_param_name = 'mode'
     " give feedback because reporting delayed till after tidying
     redraw | echo "Tidying..."
@@ -178,7 +177,7 @@ function! DNP_PerlTidy(params)
     " time to tidy
     " - use of shellescape on l:cmd causes failure with command string
     "   wrapped in single quotes and interpreted as a single command
-    let l:cmd = l:tidy_cmd . ' ' . l:tidy_args . ' ' . l:file
+    let l:cmd = l:tidy . ' -f ' . l:file
     silent let l:output = systemlist(l:cmd)
     " must reload file to display changes to underlying *file*
     " redraw is required otherwise refresh occurs after list output
@@ -252,7 +251,7 @@ function! DNP_PerlCritic(params)
     " time to criticise
     " - use of shellescape on l:cmd causes failure with command string
     "   wrapped in single quotes and interpreted as a single command
-    let l:cmd = l:critic . ' ' . l:file . ' ' . '-s' . ' ' . l:severity
+    let l:cmd = l:critic . ' -f ' . l:file . ' -s ' . l:severity
     silent let l:output = systemlist(l:cmd)
     if type(l:output) == type("")  " error
         let l:msg = "Command '" . l:cmd . "' failed"
