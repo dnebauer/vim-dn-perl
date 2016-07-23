@@ -8,7 +8,7 @@
 " CONTROL STATEMENTS                                                  {{{1
 
 " Only do this when not done yet for this buffer                      {{{2
-if exists("b:did_dn_perlsettings")
+if exists('b:did_dn_perlsettings')
   finish
 endif
 let b:did_dn_perlsettings = 1
@@ -31,7 +31,7 @@ let b:dn_false = 0
 " SETTINGS                                                           {{{1
 
 " syntax                                                             {{{2
-" include pod.vim syntax file with perl.vim                          
+" include pod.vim syntax file with perl.vim
 let perl_include_pod   = 1
 " highlight complex expressions such as @{[$x, $y]}
 let perl_extended_vars = 1
@@ -110,7 +110,7 @@ function! s:param(params, param)
         return
     endif
     " check param
-    if a:param == ''
+    if a:param ==? ''
         call DNU_Error('No parameter name supplied to s:param')
         return
     endif
@@ -146,7 +146,7 @@ function! DNP_PerlTidy(params)
     let l:tidy = 'dn-perltidy'
     let l:mode_param_name = 'mode'
     " give feedback because reporting delayed till after tidying
-    redraw | echo "Tidying..."
+    redraw | echo 'Tidying...'
 	" make sure we have dn-perltidy
     if !s:has_perltidy()
         call DNU_Error("Cannot find 'dn-perltidy'")
@@ -154,26 +154,28 @@ function! DNP_PerlTidy(params)
     endif
     " process variables
     let l:mode = s:param(a:params, l:mode_param_name)
-    if l:mode == '' | return | endif
+    if l:mode ==? '' | return | endif
 	" change to filedir if it isn't cwd
-    let l:file = expand("%")
+    let l:file = expand('%')
 	let l:path = DNU_GetFileDir()
-	let l:cwd = getcwd() . "/"
+	let l:cwd = getcwd() . '/'
 	if l:cwd !=# l:path
 		try
-			silent execute "lcd" l:path
+			silent execute 'lcd' l:path
 		catch
-			let l:msg = "Fatal error: Unable to change to the current" . 
+			let l:msg = 'Fatal error: Unable to change to the current' .
                         \ "document's directory:\n"
                         \ . "'" . l:path . "'.\n"
-                        \ . "Aborting."
+                        \ . 'Aborting.'
 			call DNU_Error(l:msg)
-            if l:mode == 'insert' | call DNU_InsertMode(b:dn_true) | endif
+            if l:mode ==# 'insert'
+                call DNU_InsertMode(b:dn_true)
+            endif
 			return
 		endtry
 	endif
     " save file to be sure we operate on current version of it
-    silent execute "update"
+    silent execute 'update'
     " time to tidy
     " - use of shellescape on l:cmd causes failure with command string
     "   wrapped in single quotes and interpreted as a single command
@@ -181,9 +183,9 @@ function! DNP_PerlTidy(params)
     silent let l:output = systemlist(l:cmd)
     " must reload file to display changes to underlying *file*
     " redraw is required otherwise refresh occurs after list output
-    silent! execute "edit"
+    silent! execute 'edit'
     redraw
-    if type(l:output) == type("")  " error
+    if type(l:output) == type('')  " error
         let l:msg = "Command '" . l:cmd . "' failed"
         call DNU_Error(l:msg)
         let l:msg = "Shell feedback: '" . l:output . "'"
@@ -195,7 +197,7 @@ function! DNP_PerlTidy(params)
     endif
     " do not check for v:shell_error because dn-perltidy always exits
     " with an error code - see dn-perltidy man page for details
-    if l:mode == 'insert' | call DNU_InsertMode(b:dn_true) | endif
+    if l:mode ==# 'insert' | call DNU_InsertMode(b:dn_true) | endif
 endfunction
 " ------------------------------------------------------------------------
 " Function:   DNP_PerlCritic                                          {{{2
@@ -222,7 +224,7 @@ function! DNP_PerlCritic(params)
     endif
     " process variables
     let l:mode = s:param(a:params, l:mode_param_name)
-    if l:mode == '' | return | endif
+    if l:mode ==? '' | return | endif
     let l:severity = s:param(a:params, l:severity_param_name)
     if !l:severity | return | endif
     " give feedback because reporting delayed till after analysis
@@ -230,30 +232,32 @@ function! DNP_PerlCritic(params)
                 \ . ' intent...'
     redraw | echo l:msg
 	" change to filedir if it isn't cwd
-    let l:file = expand("%")
+    let l:file = expand('%')
 	let l:path = DNU_GetFileDir()
-	let l:cwd = getcwd() . "/"
+	let l:cwd = getcwd() . '/'
 	if l:cwd !=# l:path
 		try
-			silent execute "lcd" l:path
+			silent execute 'lcd' l:path
 		catch
-			let l:msg = "Fatal error: Unable to change to the current" . 
+			let l:msg = 'Fatal error: Unable to change to the current' .
                         \ "document's directory:\n"
                         \ . "'" . l:path . "'.\n"
-                        \ . "Aborting."
+                        \ . 'Aborting.'
 			call DNU_Error(l:msg)
-            if l:mode == 'insert' | call DNU_InsertMode(b:dn_true) | endif
+            if l:mode ==# 'insert'
+                call DNU_InsertMode(b:dn_true)
+            endif
 			return
 		endtry
 	endif
     " save file to be sure we operate on current version of it
-    silent execute "update"
+    silent execute 'update'
     " time to criticise
     " - use of shellescape on l:cmd causes failure with command string
     "   wrapped in single quotes and interpreted as a single command
     let l:cmd = l:critic . ' -f ' . l:file . ' -s ' . l:severity
     silent let l:output = systemlist(l:cmd)
-    if type(l:output) == type("")  " error
+    if type(l:output) == type('')  " error
         let l:msg = "Command '" . l:cmd . "' failed"
         call DNU_Error(l:msg)
         let l:msg = "Shell feedback: '" . l:output . "'"
@@ -265,7 +269,7 @@ function! DNP_PerlCritic(params)
     endif
     " do not check for v:shell_error because dn-perlcritic always exits
     " with an error code - see dn-perlcritic man page for details
-    if l:mode == 'insert' | call DNU_InsertMode(b:dn_true) | endif
+    if l:mode ==# 'insert' | call DNU_InsertMode(b:dn_true) | endif
 endfunction
 
 " ========================================================================
