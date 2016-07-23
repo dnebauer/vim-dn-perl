@@ -9,4 +9,5 @@ syn match perlStatementProc '\<\%(parameter\|options\|cmd_tags\|cmd_flag\|cmd_al
 
 " syntax from Readonly
 syn match perlStatementReadonly '\<\%(Readonly\s\+my\)\>'
-HiLink perlStatementReadonly	perlStatement
+command! -nargs=+ HiLinkRO hi def link <args>
+HiLinkRO perlStatementReadonly perlStatement
