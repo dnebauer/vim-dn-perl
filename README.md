@@ -15,31 +15,31 @@ Settings
 
 These settings improve the perl coding experience.
 
-###perl\_include\_pod
+###g:perl\_include\_pod
 
 set to true
 
 causes the pod.vim syntax file to be included with perl.vim
 
-###perl\_extended\_vars
+###g:perl\_extended\_vars
 
 set to true
 
 highlights complex expressions such as @{\[\$x, \$y\]}
 
-###perl\_sync\_dist
+###g:perl\_sync\_dist
 
 set to 250
 
 increase the context used for highlighting
 
-###perl\_sub\_signatures
+###g:perl\_sub\_signatures
 
 set to true
 
 prevents error highlighting of method arguments
 
-###keywordprg
+###g:keywordprg
 
 default is to search functions \(`perldoc -f X`\)
 

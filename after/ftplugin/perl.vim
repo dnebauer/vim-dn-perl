@@ -23,7 +23,7 @@ set cpo&vim
 " VARIABLES                                                          {{{1
 
 " Boolean values                                                     {{{2
-let b:dn_true = 1
+let b:dn_true  = 1
 let b:dn_false = 0
 
 " =======================================================================
@@ -32,11 +32,11 @@ let b:dn_false = 0
 
 " syntax                                                             {{{2
 " include pod.vim syntax file with perl.vim
-let perl_include_pod   = 1
+let g:perl_include_pod    = 1
 " highlight complex expressions such as @{[$x, $y]}
-let perl_extended_vars = 1
+let g:perl_extended_vars  = 1
 " use more context for highlighting
-let perl_sync_dist     = 250
+let g:perl_sync_dist      = 250
 " prevent error highlighting of method arguments
 let g:perl_sub_signatures = b:dn_true                              " }}}2
 " K help                                                             {{{2
@@ -58,9 +58,9 @@ set keywordprg=f(){\ \
 " Parameters: nil
 " Prints:     nil
 " Return:     boolean
-" Note:       relies on detecting function 'DNU_Error'
+" Note:       relies on detecting function 'dn#util#error'
 function! s:has_utils()
-    return exists('*DNU_Error')
+    return exists('*dn#util#error')
 endfunction
 " ------------------------------------------------------------------------
 " Function:   s:has_perlcritic                                       {{{2
@@ -106,17 +106,17 @@ function! s:param(params, param)
                 \ }
     " check params
     if type(a:params) != type({})
-        call DNU_Error('Parameter variable is NOT a dictionary')
+        call dn#util#error('Parameter variable is NOT a dictionary')
         return
     endif
     " check param
     if a:param ==? ''
-        call DNU_Error('No parameter name supplied to s:param')
+        call dn#util#error('No parameter name supplied to s:param')
         return
     endif
     " deal with invalid parameter
     if !has_key(a:params, a:param)
-        call DNU_Error("Invalid parameter'" . a:param . "'")
+        call dn#util#error("Invalid parameter'" . a:param . "'")
         return
     endif
     " check validity
@@ -124,7 +124,7 @@ function! s:param(params, param)
     if !count(l:valid_values[a:param], l:value)
         let l:msg = "parameter '" . a:param . "' "
                     \ "has invalid value '" . l:value . "'"
-        call DNU_Error(l:msg)
+        call dn#util#error(l:msg)
     endif
     " return parameter value (even if invalid)
     return l:value
@@ -139,7 +139,7 @@ endfunction
 function! DNP_PerlTidy(params)
     " rely on dn-utils
     if !s:has_utils()
-        call DNU_Error('Cannot find dn-utils ftplugin')
+        call dn#util#error('Cannot find dn-utils ftplugin')
         return
     endif
 	" variable
@@ -149,7 +149,7 @@ function! DNP_PerlTidy(params)
     redraw | echo 'Tidying...'
 	" make sure we have dn-perltidy
     if !s:has_perltidy()
-        call DNU_Error("Cannot find 'dn-perltidy'")
+        call dn#util#error("Cannot find 'dn-perltidy'")
         return
     endif
     " process variables
@@ -157,7 +157,7 @@ function! DNP_PerlTidy(params)
     if l:mode ==? '' | return | endif
 	" change to filedir if it isn't cwd
     let l:file = expand('%')
-	let l:path = DNU_GetFileDir()
+	let l:path = dn#util#getFileDir()
 	let l:cwd = getcwd() . '/'
 	if l:cwd !=# l:path
 		try
@@ -167,9 +167,9 @@ function! DNP_PerlTidy(params)
                         \ "document's directory:\n"
                         \ . "'" . l:path . "'.\n"
                         \ . 'Aborting.'
-			call DNU_Error(l:msg)
+			call dn#util#error(l:msg)
             if l:mode ==# 'insert'
-                call DNU_InsertMode(b:dn_true)
+                call dn#util#insertMode(b:dn_true)
             endif
 			return
 		endtry
@@ -187,9 +187,9 @@ function! DNP_PerlTidy(params)
     redraw
     if type(l:output) == type('')  " error
         let l:msg = "Command '" . l:cmd . "' failed"
-        call DNU_Error(l:msg)
+        call dn#util#error(l:msg)
         let l:msg = "Shell feedback: '" . l:output . "'"
-        call DNU_Error(l:msg)
+        call dn#util#error(l:msg)
     else  " assume succeeded so have a List
         for l:item in l:output
             echo l:item
@@ -197,7 +197,7 @@ function! DNP_PerlTidy(params)
     endif
     " do not check for v:shell_error because dn-perltidy always exits
     " with an error code - see dn-perltidy man page for details
-    if l:mode ==# 'insert' | call DNU_InsertMode(b:dn_true) | endif
+    if l:mode ==# 'insert' | call dn#util#insertMode(b:dn_true) | endif
 endfunction
 " ------------------------------------------------------------------------
 " Function:   DNP_PerlCritic                                          {{{2
@@ -210,7 +210,7 @@ endfunction
 function! DNP_PerlCritic(params)
     " rely on dn-utils
     if !s:has_utils()
-        call DNU_Error('Cannot find dn-utils ftplugin')
+        call dn#util#error('Cannot find dn-utils ftplugin')
         return
     endif
 	" variable
@@ -219,7 +219,7 @@ function! DNP_PerlCritic(params)
     let l:severity_param_name = 'severity'
 	" make sure we have dn-perlcritic
     if !s:has_perlcritic()
-        call DNU_Error("Cannot find '" . l:critic . "'")
+        call dn#util#error("Cannot find '" . l:critic . "'")
         return
     endif
     " process variables
@@ -233,7 +233,7 @@ function! DNP_PerlCritic(params)
     redraw | echo l:msg
 	" change to filedir if it isn't cwd
     let l:file = expand('%')
-	let l:path = DNU_GetFileDir()
+	let l:path = dn#util#getFileDir()
 	let l:cwd = getcwd() . '/'
 	if l:cwd !=# l:path
 		try
@@ -243,9 +243,9 @@ function! DNP_PerlCritic(params)
                         \ "document's directory:\n"
                         \ . "'" . l:path . "'.\n"
                         \ . 'Aborting.'
-			call DNU_Error(l:msg)
+			call dn#util#error(l:msg)
             if l:mode ==# 'insert'
-                call DNU_InsertMode(b:dn_true)
+                call dn#util#insertMode(b:dn_true)
             endif
 			return
 		endtry
@@ -259,9 +259,9 @@ function! DNP_PerlCritic(params)
     silent let l:output = systemlist(l:cmd)
     if type(l:output) == type('')  " error
         let l:msg = "Command '" . l:cmd . "' failed"
-        call DNU_Error(l:msg)
+        call dn#util#error(l:msg)
         let l:msg = "Shell feedback: '" . l:output . "'"
-        call DNU_Error(l:msg)
+        call dn#util#error(l:msg)
     else  " assume succeeded so have a List
         for l:item in l:output
             echo l:item
@@ -269,7 +269,7 @@ function! DNP_PerlCritic(params)
     endif
     " do not check for v:shell_error because dn-perlcritic always exits
     " with an error code - see dn-perlcritic man page for details
-    if l:mode ==# 'insert' | call DNU_InsertMode(b:dn_true) | endif
+    if l:mode ==# 'insert' | call dn#util#insertMode(b:dn_true) | endif
 endfunction
 
 " ========================================================================
