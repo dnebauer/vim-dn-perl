@@ -1,7 +1,6 @@
 " Function:    Vim perl filetype plugin
 " Last Change: 2015-05-03
 " Maintainer:  David Nebauer <david@nebauer.org>
-" License:     Public domain
 
 " ========================================================================
 
