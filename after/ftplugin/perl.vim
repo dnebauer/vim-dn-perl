@@ -14,8 +14,8 @@ let b:did_dn_perlsettings = 1
 
 " Use default cpoptions to avoid unpleasantness from customised
 " 'compatible' settings
-let s:save_cpo = &cpo
-set cpo&vim
+let s:save_cpo = &cpoptions
+set cpoptions&vim
 
 " ========================================================================
 
@@ -276,7 +276,7 @@ endfunction
 " CONTROL STATEMENTS                                                  {{{1
 
 " restore user's cpoptions
-let &cpo = s:save_cpo
+let &cpoptions = s:save_cpo
 
 " ========================================================================
 
