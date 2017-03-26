@@ -254,7 +254,7 @@ function! DNP_PerlCritic(params)
     " time to criticise
     " - use of shellescape on l:cmd causes failure with command string
     "   wrapped in single quotes and interpreted as a single command
-    let l:cmd = l:critic . ' -f ' . l:file . ' -s ' . l:severity
+    let l:cmd = l:critic . ' ' . l:file . ' --severity ' . l:severity
     silent let l:output = systemlist(l:cmd)
     if type(l:output) == type('')  " error
         let l:msg = "Command '" . l:cmd . "' failed"
