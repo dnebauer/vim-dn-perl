@@ -43,18 +43,20 @@ prevents error highlighting of method arguments
 
 default is to search functions \(`perldoc -f X`\)
 
-set to search functions, variables, general and faq help \(`perldoc -f -X || perldoc -v -X || perldoc -X || perldoc -q-X`\)
+set to search functions, variables, general and faq help
+\(`perldoc -f -X || perldoc -v -X || perldoc -X || perldoc -q-X`\)
 
 Perltidy
 --------
 
-Runs dn-perltidy on current file. It makes changes in place, saving a
-backup with a '.bak' extension. See the dn-perltidy man page for further
-details. Relies on the DNP\_PerlTidy function.
+Runs a custom perltidy script on the current file. It honours the `method`
+keyword and makes changes in place, saving a backup with a '.bak' extension.
+See the `perltidy` man page for further details. Relies on the DNP\_PerlTidy
+function.
 
 ###DNP\_PerlTidy\(params\)
 
-purpose: run utility dn-perltidy on current file
+purpose: run custom `perltidy` utility on the current file
 
 params: 1 - all parameters \[Hash\], 'mode': calling mode \('insert'|'normal'\)
 
@@ -67,18 +69,18 @@ both Insert and Normal modes.
 
 ###Command
 
-This feature is also invoked by the command 'Tidy'.
+This feature is also invoked by the command ':Tidy'.
 
 Perlcritic
 ----------
 
-Runs dn-perlcritic on current file and display output. See the
-dn-perltidy man page for further details. Relies on the DNP\_PerlCritic
-function.
+Runs a custom perlcritic script on the current file and displays any policy
+violations. This script honors Moo(se) conventions. See the `perlcritic` man
+page for further details. Relies on the DNP\_PerlCritic function.
 
 ###DNP\_PerlCritic\(params\)
 
-purpose: run utility dn-perltidy on current file
+purpose: run custom `perlcritic` utility on the current file
 
 params: 1 - all parameters \[Hash\], 'mode': calling mode \('insert'|'normal'\),
 'severity': severity of analysis \(1..5\)

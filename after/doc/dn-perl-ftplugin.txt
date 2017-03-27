@@ -76,7 +76,10 @@ The Perl::Tidy module provides a convenience script called "perltidy",
 but it does not provide support for the "method" keyword. This plugin
 includes a custom version of "perltidy" which does. This version of
 "perltidy" is configured to save a backup of the current file with a
-".bak" extension before beautifying it.
+".bak" extension before beautifying it. It has the following
+dependencies: Cwd, File::MimeInfo::Magic, Function::Parameters,
+Getopt::Long::Descriptive, List::Util, Moo, namespace::clean, Perl::Tidy,
+Readonly, strictures, Test::File, Types::Standard, version.
 
 This plugin has a function called DNP_PerlTidy that locates and runs the
 custom "perltidy" utility. If it cannot locate the utility script the
@@ -99,7 +102,11 @@ both Insert and Normal modes. This feature is also invoked by the command
 Perl::Critic is a perl module that critiques perl source code for best
 practices. The Perl::Critic module provides a convenience script called
 perlcritic, but it does not provide Moo(se) support. This plugin includes
-a custom version of "perlcritic" which does.
+a custom version of "perlcritic" which does. The script has the following
+dependences: Carp, Cwd, English, File::MimeInfo::Magic,
+Function::Parameters, List::Util, Moo, MooX::Options, namespace::clean,
+Perl::Critic, Perl::Critic::Moose, Readonly, strictures, Test::File,
+Type::Library, Type::Utils, Types::Standard, version.
 
 This plugin has a function called DNP_PerlCritic that locates and runs
 the custom "perlcritic" utility. If it cannot locate the utility script
