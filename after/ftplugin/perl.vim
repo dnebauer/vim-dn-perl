@@ -68,8 +68,8 @@ endfunction
 " Prints:     nil
 " Return:     string
 function! s:severity_verb(level)
-    let l:verbs = {5: 'gentle', 4: 'stern',
-                \ 3: 'harsh', 2: 'cruel', 1: 'brutal'}
+    let l:verbs = {5: 'Gentle', 4: 'Stern',
+                \ 3: 'Harsh', 2: 'Cruel', 1: 'Brutal'}
     return l:verbs[a:level]
 endfunction
 " ------------------------------------------------------------------------
@@ -210,7 +210,7 @@ function! DNP_PerlCritic(params)
     let l:severity = s:param(a:params, l:severity_param_name)
     if !l:severity | return | endif
     " give feedback because reporting delayed till after analysis
-    let l:msg = 'Performing ' . s:severity_verb(l:severity)
+    let l:msg = s:severity_verb(l:severity)
                 \ . ' critique (severity ' . l:severity . ')... '
     redraw | echo l:msg
 	" change to filedir if it isn't cwd
@@ -221,7 +221,7 @@ function! DNP_PerlCritic(params)
 		try
 			silent execute 'lcd' l:path
 		catch
-            echon 'done'
+            echon 'error!'
 			let l:msg = 'Fatal error: Unable to change to the current' .
                         \ "document's directory:\n"
                         \ . "'" . l:path . "'.\n"
@@ -250,7 +250,7 @@ function! DNP_PerlCritic(params)
         if empty(l:output)    " nothing to report
             echon 'no policy violations'
         else    " display feedback
-            echon 'done'
+            echon 'found policy violations:'
             for l:item in l:output
                 echo l:item
             endfor
