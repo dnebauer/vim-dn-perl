@@ -68,33 +68,23 @@ keywordprg
     set to search functions, variables, general and faq help
         (perldoc -f -X || perldoc -v -X || perldoc -X || perldoc -q-X )
 -------------------------------------------------------------------------
-                                            *dn-perltidy*  *dn-perl-perltidy*
+                                                         *dn-perl-perltidy*
 5. Perltidy
 
-Runs dn-perltidy on current file. It makes changes in place, saving a
-backup with a ".bak" extension. See the dn-perltidy man page for further
-details. Relies on the DNP_PerlTidy function.
-
 Perl::Tidy is a perl module that parses and beautifies perl source code.
-The Perl::Tidy module provides a convenience script called perltidy, but
-that script does not provide support for the "method" keyword. This
-plugin instead uses a utility script called |dn-perltidy| which must be
-available on the system path. (The dn-perltidy utility is NOT provided as
-part of this plugin but must be obtained separately.)
+The Perl::Tidy module provides a convenience script called "perltidy",
+but it does not provide support for the "method" keyword. This plugin
+includes a custom version of "perltidy" which does. This version of
+"perltidy" is configured to save a backup of the current file with a
+".bak" extension before beautifying it.
 
-This plugin has a function called DNP_PerlTidy that calls dn-perltidy
-which, in turn, calls the Perl::Tidy module to beautify the current
-buffer, savinf a backup with a ".bak" extension. (If dn-perltidy is not
-available, invoking the function DNP_PerlTidy displays a warning
-message.)
-
-The executable dn-perltidy has the following interface:
-    dn-perltidy FILEPATH
-where FILEPATH is the filepath of the perl file to beautify.
+This plugin has a function called DNP_PerlTidy that locates and runs the
+custom "perltidy" utility. If it cannot locate the utility script the
+function will display an error message.
 
                                                              *DNP-PerlTidy*
 DNP_PerlTidy(params)
-    purpose: run utility dn-perltidy on current file
+    purpose: run custom "perltidy" utility on current file
     params:  1 - all parameters [Hash]
              mode: calling mode ('insert'|'normal')
     return:  nil
@@ -103,31 +93,21 @@ This feature is mapped by default to "<LocalLeader>t", usually "\t", in
 both Insert and Normal modes. This feature is also invoked by the command
 ":Tidy".
 -------------------------------------------------------------------------
-                                        *dn-perlcritic*  *dn-perl-perlcritic*
+                                                       *dn-perl-perlcritic*
 6. Perlcritic
 
 Perl::Critic is a perl module that critiques perl source code for best
 practices. The Perl::Critic module provides a convenience script called
-perlcritic, but that script does not provide Moo(se) support. This plugin
-instead uses a utility script called |dn-perlcritic| which must be
-available on the system path. (The dn-perlcritic utility is NOT provided
-as part of this plugin but must be obtained separately.)
+perlcritic, but it does not provide Moo(se) support. This plugin includes
+a custom version of "perlcritic" which does.
 
-This plugin has a function called DNP_PerlCritic that calls dn-perlcritic
-which, in turn, calls the Perl::Critic module to analyse the current
-buffer and display any violations of the module's policies. (If
-dn-perlcritic is not available, invoking the function DNP_PerlCritic
-displays a warning message.)
-
-The executable dn-perlcritic has the following interface:
-    dn-perlcritic --severity SEVERITY FILEPATH
-where SEVERITY is the Perl::Critic severity level (1-5) and FILEPATH is
-the filepath of the perl file to check. It sends output to stdout with
-each policy violation message on a new line.
+This plugin has a function called DNP_PerlCritic that locates and runs
+the custom "perlcritic" utility. If it cannot locate the utility script
+the function will display an error message.
 
                                                            *DNP-PerlCritic*
 DNP_PerlCritic(params)
-    purpose: run utility dn-perltidy on current file
+    purpose: run custom "perlcritic" utility on current file
     params:  1 - all parameters [Hash]
              mode: calling mode ('insert'|'normal')
              severity: severity of analysis (1..5)

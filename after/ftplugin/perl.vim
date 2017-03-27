@@ -62,15 +62,6 @@ function! s:has_utils()
     return exists('*dn#util#error')
 endfunction
 " ------------------------------------------------------------------------
-" Function:   s:has_perlcritic                                       {{{2
-" Purpose:    checks for dn-perlcritic
-" Parameters: nil
-" Prints:     nil
-" Return:     boolean
-function! s:has_perlcritic()
-    return executable('dn-perlcritic')
-endfunction
-" ------------------------------------------------------------------------
 " Function:   s:severity_verb                                        {{{2
 " Purpose:    provides verb for severity level
 " Parameters: 1 - severity level (int, required)
@@ -80,15 +71,6 @@ function! s:severity_verb(level)
     let l:verbs = {5: 'gentle', 4: 'stern',
                 \ 3: 'harsh', 2: 'cruel', 1: 'brutal'}
     return l:verbs[a:level]
-endfunction
-" ------------------------------------------------------------------------
-" Function:   s:has_perltidy                                         {{{2
-" Purpose:    checks for dn-perltidy
-" Parameters: nil
-" Prints:     nil
-" Return:     boolean
-function! s:has_perltidy()
-    return executable('dn-perltidy')
 endfunction
 " ------------------------------------------------------------------------
 " Function:   s:param                                                {{{2
@@ -142,14 +124,14 @@ function! DNP_PerlTidy(params)
         return
     endif
 	" variable
-    let l:tidy = 'dn-perltidy'
     let l:mode_param_name = 'mode'
     " give feedback because reporting delayed till after tidying
     redraw | echo 'Tidying...'
-	" make sure we have dn-perltidy
-    if !s:has_perltidy()
-        call dn#util#error("Cannot find 'dn-perltidy'")
-        return
+	" make sure we have plugin-specific perltidy utility
+    let l:tidy = dn#util#getRtpFile('vim-dn-perl-util-perltidy')
+    if l:tidy ==? ''
+        call dn#util#error('dn-utils: cannot find plugin perltidy utility')
+        return ''
     endif
     " process variables
     let l:mode = s:param(a:params, l:mode_param_name)
@@ -213,13 +195,13 @@ function! DNP_PerlCritic(params)
         return
     endif
 	" variable
-    let l:critic = 'dn-perlcritic'
     let l:mode_param_name = 'mode'
     let l:severity_param_name = 'severity'
-	" make sure we have dn-perlcritic
-    if !s:has_perlcritic()
-        call dn#util#error("Cannot find '" . l:critic . "'")
-        return
+	" make sure we have plugin-specific perltidy utility
+    let l:critic = dn#util#getRtpFile('vim-dn-perl-util-perlcritic')
+    if l:critic ==? ''
+        call dn#util#error('dn-utils: cannot find plugin perlcritic utility')
+        return ''
     endif
     " process variables
     let l:mode = s:param(a:params, l:mode_param_name)
