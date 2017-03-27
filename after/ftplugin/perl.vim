@@ -178,7 +178,7 @@ function! DNP_PerlTidy(params)
     " time to tidy
     " - use of shellescape on l:cmd causes failure with command string
     "   wrapped in single quotes and interpreted as a single command
-    let l:cmd = l:tidy . ' -f ' . l:file
+    let l:cmd = l:tidy . ' ' . l:file
     silent let l:output = systemlist(l:cmd)
     " must reload file to display changes to underlying *file*
     " redraw is required otherwise refresh occurs after list output
