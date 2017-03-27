@@ -146,7 +146,7 @@ use version; our $VERSION = qv('0.1');    #                            }}}1
     # return: n/a, dies on failure
     method _analyse_script () {
 
-        # set necessary variables
+        # set necessary variables for running module
         my $severity = $self->_severity;
         my $file     = $self->_file;
         my $divider  = q{'} x 60;
@@ -156,9 +156,13 @@ use version; our $VERSION = qv('0.1');    #                            }}}1
         my @violations = $critic->critique($file);
 
         # display results
-        say $divider      or confess "Unable to print";
-        print @violations or confess "Unable to print";
-        say $divider      or confess "Unable to print";
+        if (@violations) {
+            say $divider      or confess "Unable to print";
+            print @violations or confess "Unable to print";
+            say $divider      or confess "Unable to print";
+        }
+
+        return;
     }
 
     1;    #                                                            }}}1

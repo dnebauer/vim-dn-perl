@@ -178,7 +178,7 @@ use version; our $VERSION = qv('0.1');    #                            }}}1
             prefilter  => $self->_prefilter,
             postfilter => $self->_postfilter,
         );
-        if ($error) {        # serious error in params aborted tidying
+        if ($error) {               # serious error in params aborted tidying
             print "<<STDERR>>\n$stderr_string\n";
             die "Exiting because of serious errors\n";
         }

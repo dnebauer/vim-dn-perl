@@ -175,6 +175,7 @@ function! DNP_PerlTidy(params)
         for l:item in l:output
             echo l:item
         endfor
+        echo 'Tidying done'
     endif
     " do not check for v:shell_error because dn-perltidy always exits
     " with an error code - see dn-perltidy man page for details
@@ -210,7 +211,7 @@ function! DNP_PerlCritic(params)
     if !l:severity | return | endif
     " give feedback because reporting delayed till after analysis
     let l:msg = 'Criticising with ' . s:severity_verb(l:severity)
-                \ . ' intent...'
+                \ . ' intent (severity ' . l:severity . ')...'
     redraw | echo l:msg
 	" change to filedir if it isn't cwd
     let l:file = expand('%')
