@@ -246,7 +246,7 @@ function! DNP_PerlCritic(params)
         call dn#util#error(l:msg)
     elseif type(l:output) == type([])  " succeeded
         if empty(l:output)    " nothing to report
-            call dn#util#showMsg('No policy violations found')
+            echo 'No policy violations found'
         else    " display feedback
             for l:item in l:output
                 echo l:item
