@@ -244,13 +244,22 @@ function! DNP_PerlCritic(params)
         call dn#util#error(l:msg)
         let l:msg = "Shell feedback: '" . l:output . "'"
         call dn#util#error(l:msg)
-    else  " assume succeeded so have a List
-        for l:item in l:output
-            echo l:item
-        endfor
+    elseif type(l:output) == type([])  " succeeded
+        if empty(l:output)    " nothing to report
+            call dn#util#showMsg('No policy violations found')
+        else    " display feedback
+            for l:item in l:output
+                echo l:item
+            endfor
+        endif
+    else    " unexpected data type
+        call dn#util#error('Unexpected data type for perlcritic feedback')
+        return
     endif
-    " do not check for v:shell_error because dn-perlcritic always exits
-    " with an error code - see dn-perlcritic man page for details
+    " do not check for v:shell_error because perlcritic has
+    " previously exited with this error even when successful:
+    " 'Tests were run but no plan was declared
+    "  and done_testing() was not seen.'
     if l:mode ==# 'insert' | call dn#util#insertMode(b:dn_true) | endif
 endfunction
 
