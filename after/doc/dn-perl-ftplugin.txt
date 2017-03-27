@@ -21,11 +21,11 @@ Dn Perl Plugin                                                    *dn-perl*
 A filetype plugin providing auxiliary perl support. It assumes a recent
 perl ftplugin is in use.
 
-All functions in this library are global. They all have the prefix 'DNP_'
+All functions in this library are global. They all have the prefix "DNP_"
 to try and avoid namespace collisions.
 
 As the syntax file provided by this ftplugin relies on the main perl
-ftplugin, all files in this ftplugin are installed to 'after'
+ftplugin, all files in this ftplugin are installed to "after" 
 directories.
 
 Some mappings and autocommands are also provided.
@@ -64,7 +64,7 @@ perl_sub_signatures
 
                                                    *dn-perl-setting-k-help*
 keywordprg
-    default is to search functions ('perldoc -f X')
+    default is to search functions ("perldoc -f X")
     set to search functions, variables, general and faq help
         (perldoc -f -X || perldoc -v -X || perldoc -X || perldoc -q-X )
 -------------------------------------------------------------------------
@@ -99,9 +99,9 @@ DNP_PerlTidy(params)
              mode: calling mode ('insert'|'normal')
     return:  nil
                                             *dn-mapping-t*  *dn-command-tidy*
-This feature is mapped by default to '<LocalLeader>t', usually '\t', in
+This feature is mapped by default to "<LocalLeader>t", usually "\t", in
 both Insert and Normal modes. This feature is also invoked by the command
-'Tidy'.
+":Tidy".
 -------------------------------------------------------------------------
                                         *dn-perlcritic*  *dn-perl-perlcritic*
 6. Perlcritic
@@ -135,23 +135,23 @@ DNP_PerlCritic(params)
                               *dn-mapping-c1*  *dn-mapping-c2*  *dn-mapping-c3*
                           *dn-mapping-c4*  *dn-mapping-c5*  *dn-command-critic*
 This feature is mapped in both Insert and Normal modes by default to
-'<LocalLeader>cX' where X is the desired severity of analysis (1, 2, 3,
-4 or 5), and is usually '\cX'. This feature is also invoked by the
-command 'CriticX' where X is the severity.
+"<LocalLeader>cX" where X is the desired severity of analysis (1, 2, 3,
+4 or 5), and is usually "\cX". This feature is also invoked by the
+command ":CriticX" where X is the severity.
 -------------------------------------------------------------------------
                                                            *dn-perl-syntax*
 7. Syntax
 
 This ftplugin assumes the following syntax files from the vim-perl plugin
 are in use: moose.vim and method-signatures.vim. At the time of writing
-these are all contributed files (in the 'contrib' directory) and must be
+these are all contributed files (in the "contrib" directory) and must be
 manually installed in a directory visible to vim.
 
 These useful files are also contributed to the vim-perl ftplugin and are
 worth using: try-tiny.vim, carp.vim, and highlight-all-pragmas.vim.
 
 The syntax file provided by this ftplugin relies on the main perl
-ftplugin syntax file, and so is installed to an 'after' directory. This
+ftplugin syntax file, and so is installed to an "after" directory. This
 auxiliary synta file provides support for keywords provided by the
 MooseX::App(::Simple) and Readonly modules.
 -------------------------------------------------------------------------
