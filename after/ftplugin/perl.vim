@@ -210,9 +210,9 @@ function! DNP_PerlCritic(params)
     let l:severity = s:param(a:params, l:severity_param_name)
     if !l:severity | return | endif
     " give feedback because reporting delayed till after analysis
-    let l:msg = 'Criticising with ' . s:severity_verb(l:severity)
-                \ . ' intent (severity ' . l:severity . ')...'
-    redraw | echo l:msg
+    let l:msg = 'Performing' . s:severity_verb(l:severity)
+                \ . ' critique (severity ' . l:severity . ')... '
+    redraw | echon l:msg
 	" change to filedir if it isn't cwd
     let l:file = expand('%')
 	let l:path = dn#util#getFileDir()
@@ -221,6 +221,7 @@ function! DNP_PerlCritic(params)
 		try
 			silent execute 'lcd' l:path
 		catch
+            echo 'done'
 			let l:msg = 'Fatal error: Unable to change to the current' .
                         \ "document's directory:\n"
                         \ . "'" . l:path . "'.\n"
@@ -240,19 +241,22 @@ function! DNP_PerlCritic(params)
     let l:cmd = l:critic . ' ' . l:file . ' --severity ' . l:severity
     silent let l:output = systemlist(l:cmd)
     if type(l:output) == type('')  " error
+        echo 'error!'
         let l:msg = "Command '" . l:cmd . "' failed"
         call dn#util#error(l:msg)
         let l:msg = "Shell feedback: '" . l:output . "'"
         call dn#util#error(l:msg)
     elseif type(l:output) == type([])  " succeeded
         if empty(l:output)    " nothing to report
-            echo 'No policy violations found'
+            echo 'no policy violations'
         else    " display feedback
+            echo 'done'
             for l:item in l:output
                 echo l:item
             endfor
         endif
     else    " unexpected data type
+        echo 'error!'
         call dn#util#error('Unexpected data type for perlcritic feedback')
         return
     endif
