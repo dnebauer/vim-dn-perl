@@ -207,7 +207,7 @@ sript or module. Optional (because the script may be called with the
 
 Severity level of analysis. Integer from 1 to 5. Optional. S<Default: 5.>
 
-Corresponds to Perl::Critic severity levels S<5 (gentle),> S<4 (stern),> 
+Corresponds to Perl::Critic severity levels S<5 (gentle),> S<4 (stern),>
 S<3 (harsh),> S<2 (cruel)> and S<1 (brutal).>
 
 =item B<--policies>
