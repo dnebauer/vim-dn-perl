@@ -124,7 +124,7 @@ DNP_PerlCritic(params)
 This feature is mapped in both Insert and Normal modes by default to
 "<LocalLeader>cX" where X is the desired severity of analysis (1, 2, 3,
 4 or 5), and is usually "\cX". This feature is also invoked by the
-command ":CriticX" where X is the severity.
+command ":Critic X" where X is the desired severity (1, 2, 3, 4 or 5).
 -------------------------------------------------------------------------
                                                            *dn-perl-syntax*
 7. Syntax

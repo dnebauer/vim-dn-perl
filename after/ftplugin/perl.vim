@@ -73,8 +73,17 @@ function! s:severity_verb(level)
     return l:verbs[a:level]
 endfunction
 " ------------------------------------------------------------------------
+" Function:   s:severity_completion                                  {{{2
+" Purpose:    list severity values for command completion
+" Parameters: nil
+" Prints:     nil
+" Return:     list
+function! s:severity_completion()
+    return [5, 4, 3, 2, 1]
+endfunction
+" ------------------------------------------------------------------------
 " Function:   s:param                                                {{{2
-" Purpose:    run dn-perltidy on file
+" Purpose:    extract parameter value from parameter hash
 " Parameters: 1 - param hash
 "             2 - param
 " Prints:     errors
@@ -346,15 +355,10 @@ nmap <buffer> <unique> <Plug>DnT1N :call DNP_PerlCritic({'mode': 'normal', 'seve
 " Commands:                                                           {{{2
 
 " :Tidy                                                               {{{3
-command! Tidy call DNP_PerlTidy({'mode': 'normal'})
+command! -buffer Tidy call DNP_PerlTidy({'mode': 'normal'})
 
-" :CriticX (where X is 1,2,3,4 or 5; default=5)                       {{{3
-command! Critic  call DNP_PerlCritic({'mode': 'normal', 'severity': 5})
-command! Critic5 call DNP_PerlCritic({'mode': 'normal', 'severity': 5})
-command! Critic4 call DNP_PerlCritic({'mode': 'normal', 'severity': 4})
-command! Critic3 call DNP_PerlCritic({'mode': 'normal', 'severity': 3})
-command! Critic2 call DNP_PerlCritic({'mode': 'normal', 'severity': 2})
-command! Critic1 call DNP_PerlCritic({'mode': 'normal', 'severity': 1})
+" :Critic X (where X is 1,2,3,4 or 5)                                 {{{3
+command! -buffer -nargs=1 -complete=customlist,s:severity_completion Critic call DNP_PerlCritic({'mode': 'normal', 'severity': <args>})
 
 " }}}1
 
