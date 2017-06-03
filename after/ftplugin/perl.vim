@@ -75,10 +75,12 @@ endfunction
 " ------------------------------------------------------------------------
 " Function:   s:severity_completion                                  {{{2
 " Purpose:    list severity values for command completion
-" Parameters: nil
+" Parameters: 1 - leading part of argument currently being completed
+"             2 - entire command line
+"             3 - cursor position in command line
 " Prints:     nil
 " Return:     list
-function! s:severity_completion()
+function! s:severity_completion(arg, line, pos)
     return [5, 4, 3, 2, 1]
 endfunction
 " ------------------------------------------------------------------------
