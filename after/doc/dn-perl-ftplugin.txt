@@ -130,7 +130,7 @@ command ":Critic X" where X is the desired severity (1, 2, 3, 4 or 5).
 7. Syntax
 
 This ftplugin assumes the following syntax files from the vim-perl plugin
-are in use: moose.vim and method-signatures.vim. At the time of writing
+are in use: moose.vim and function-parameters.vim. At the time of writing
 these are all contributed files (in the "contrib" directory) and must be
 manually installed in a directory visible to vim.
 
