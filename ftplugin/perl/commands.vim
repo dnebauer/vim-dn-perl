@@ -31,7 +31,8 @@ command! -buffer -nargs=0 Tidy call dn#perl#tidy()
 " |:command-completion-customlist|).
 function! s:severity_completion(arg, line, pos)
     "return [5, 4, 3, 2, 1]
-    return ['5_gentle', '4_stern', '3_harsh', '2_cruel', '1_brutal']
+    return ['5', '4', '3', '2', '1']
+    "return ['5_gentle', '4_stern', '3_harsh', '2_cruel', '1_brutal']
 endfunction
 " }}}2
 
