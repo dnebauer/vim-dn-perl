@@ -31,15 +31,16 @@ command! -buffer -nargs=0 Tidy call dn#perl#tidy()
 " |:command-completion-customlist|).
 function! s:severity_completion(arg, line, pos)
     "return [5, 4, 3, 2, 1]
-    return ['5', '4', '3', '2', '1']
-    "return ['5_gentle', '4_stern', '3_harsh', '2_cruel', '1_brutal']
+    "return ['5', '4', '3', '2', '1']
+    return ['5 (gentle)', '4 (stern)', '3 (harsh)', '2 (cruel)', '1 (brutal)']
 endfunction
 " }}}2
 
 ""
 " Run custom perlcritic plugin script (see @section(perlcritic)) with
 " {severity} level 1, 2, 3, 4, or 5. Runs @function(dn#perl#critic).
-command! -buffer -nargs=1 -complete=customlist,s:severity_completion Critic call dn#perl#critic(<args>)
+command! -buffer -nargs=1 -complete=customlist,s:severity_completion Critic
+            \ call dn#perl#critic(<args>)
 " }}}1
 
 " Control statements    {{{1
