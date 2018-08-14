@@ -15,7 +15,7 @@ The K help configured by the vim option
 'keywordprg'
 ```
 
-which defaults in perl file types to search function help:
+defaults in perl file types to search function help:
 
 ```sh
 perldoc -f X
