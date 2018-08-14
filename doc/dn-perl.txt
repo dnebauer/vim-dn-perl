@@ -1,0 +1,139 @@
+*dn-perl.txt*	Auxiliary filetype plugin for perl5
+David Nebauer                                                        *dn-perl*
+
+==============================================================================
+CONTENTS                                                    *dn-perl-contents*
+  1. Introduction..............................................|dn-perl-intro|
+  2. Perltidy...............................................|dn-perl-perltidy|
+  3. Perlcritic...........................................|dn-perl-perlcritic|
+  4. Commands...............................................|dn-perl-commands|
+  5. Mappings...............................................|dn-perl-mappings|
+  6. Functions.............................................|dn-perl-functions|
+
+==============================================================================
+INTRODUCTION                                                   *dn-perl-intro*
+
+A filetype plugin providing auxiliary perl support. All functions have the
+prefix "#dn#perl". Provides custom versions of |dn-perl-perltidy| and
+|dn-perl-perlcritic| which can be called using |dn-perl-commands| and
+|dn-perl-mappings|. The dn-perl plugin requires the |dn-utils| plugin.
+
+==============================================================================
+PERLTIDY                                                    *dn-perl-perltidy*
+
+Perl::Tidy is a perl module that parses and beautifies perl source code. The
+Perl::Tidy module provides a convenience script called "perltidy", but it does
+not provide support for the "method" keyword. This dn-perl plugin includes a
+custom version of "perltidy" which supports this keyword and is configured to
+save a backup of the current file with a ".bak" extension before beautifying
+it. It has the following dependencies:
+  * Cwd
+  * File::MimeInfo::Magic
+  * Function::Parameters
+  * Getopt::Long::Descriptive
+  * List::Util
+  * Moo
+  * namespace::clean
+  * Perl::Tidy
+  * Readonly
+  * strictures
+  * Test::File
+  * Types::Standard
+  * version.
+
+The custom perltidy script can be run using the function |dn#perl#tidy()|,
+command |:Tidy|, and |dn-perl-mapping| "<Leader>t", usually "\t", in
+|Insert-mode| and |Normal-mode|.
+
+==============================================================================
+PERLCRITIC                                                *dn-perl-perlcritic*
+
+Perl::Critic is a perl module that critiques perl source code for best
+practices. The Perl::Critic module provides a convenience script called
+perlcritic, but it does not provide Moo(se) support. This plugin includes a
+custom version of "perlcritic" which does. It has the following dependences:
+  * Carp
+  * Cwd
+  * English
+  * File::MimeInfo::Magic
+  * Function::Parameters
+  * List::Util
+  * Moo
+  * MooX::Options
+  * namespace::clean
+  * Perl::Critic
+  * Perl::Critic::Moose
+  * Readonly
+  * strictures
+  * Test::File
+  * Type::Library
+  * Type::Utils
+  * Types::Standard
+  * version.
+
+The custom perlcritic script can be run using the function |dn#perl#critic()|,
+command |:Critic|, and |dn-perl-mapping|s "<Leader>c1" to "<Leader>c5",
+usually "\c1" to "\c5", in |Insert-mode| and |Normal-mode|.
+
+==============================================================================
+COMMANDS                                                    *dn-perl-commands*
+
+:[N]Tidy                                                               *:Tidy*
+  Run custom perltidy plugin script (see |dn-perl-perltidy|). Runs
+  |dn#perl#tidy()|.
+
+:[N]Critic {severity}                                                *:Critic*
+  Run custom perlcritic plugin script (see |dn-perl-perlcritic|) with
+  {severity} level 1, 2, 3, 4, or 5. Runs |dn#perl#critic()|.
+
+==============================================================================
+MAPPINGS                                                    *dn-perl-mappings*
+
+
+[NI]<Leader>t
+  * run custom perltidy plugin script (see |dn-perl-perltidy|)
+  * calls |dn#perl#perltidy()|
+
+[NI]<Leader>c5
+  * run custom perlcritic plugin script (see |dn-perl-perlcritic|) with
+    severity level 5 (gentle)
+  * calls |dn#perl#perlcritic()|
+
+[NI]<Leader>c4
+  * run custom perlcritic plugin script (see |dn-perl-perlcritic|) with
+    severity level 4 (stern)
+  * calls |dn#perl#perlcritic()|
+
+[NI]<Leader>c3
+  * run custom perlcritic plugin script (see |dn-perl-perlcritic|) with
+    severity level 3 (harsh)
+  * calls |dn#perl#perlcritic()|
+
+[NI]<Leader>c2
+  * run custom perlcritic plugin script (see |dn-perl-perlcritic|) with
+    severity level 2 (cruel)
+  * calls |dn#perl#perlcritic()|
+
+[NI]<Leader>c1
+  * run custom perlcritic plugin script (see |dn-perl-perlcritic|) with
+    severity level 1 (brutal)
+  * calls |dn#perl#perlcritic()|
+
+==============================================================================
+FUNCTIONS                                                  *dn-perl-functions*
+
+dn#perl#tidy([insert])                                        *dn#perl#tidy()*
+  Runs custom version of perltidy provided by plugin (see |dn-perl-Perltidy|).
+  Prints feedback provided by perltidy. The option [insert] indicates whether
+  or not this function was called from |Insert-mode|.
+  [insert] is false if omitted.
+
+dn#perl#critic({severity}, [insert])                        *dn#perl#critic()*
+  Runs custom version of perlcritic provided by plugin (see
+  |dn-perl-Perlcritic|). Prints feedback provided by perlcritic. The
+  {severity} determines the level of analysis. The option [insert] indicates
+  whether or not this function was called from |Insert-mode|.
+  [insert] is false if omitted.
+
+
+vim:tw=78:ts=8:ft=help:norl:
