@@ -18,6 +18,20 @@ prefix "#dn#perl". Provides custom versions of |dn-perl-perltidy| and
 |dn-perl-perlcritic| which can be called using |dn-perl-commands| and
 |dn-perl-mappings|. The dn-perl plugin requires the |dn-utils| plugin.
 
+K HELP
+
+This dn-perl plugin changes the behaviour of |K| by changing the value of the
+'keywordprg' option. The default behaviour for perl file types is to look for
+documentation on a keyword ("X" in these examples) in function help:
+>
+  perldoc -f X
+<
+This is changed to look sequentially in function, variable, general and faq
+help:
+>
+  perldoc -f X || perldoc -v X || perldoc X || perldoc -q X
+<
+
 ==============================================================================
 PERLTIDY                                                    *dn-perl-perltidy*
 

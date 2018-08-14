@@ -14,11 +14,26 @@ set cpoptions&vim
 
 ""
 " @section Introduction,  intro
-" @order intro perltidy perlcritic commands mappings functions
+" @order intro config perltidy perlcritic commands mappings functions
 " A filetype plugin providing auxiliary perl support. All functions have the
 " prefix "#dn#perl". Provides custom versions of @section(perltidy) and
 " @section(perlcritic) which can be called using @section(commands) and
 " @section(mappings). The @plugin(name) plugin requires the |dn-utils| plugin.
+"
+" @subsection K Help
+"
+" This @plugin(name) plugin changes the behaviour of |K| by changing the value
+" of the 'keywordprg' option. The default behaviour for perl file types is to
+" look for documentation on a keyword ("X" in these examples) in function
+" help:
+" >
+"   perldoc -f X
+" <
+" This is changed to look sequentially in function, variable, general and faq
+" help:
+" >
+"   perldoc -f X || perldoc -v X || perldoc X || perldoc -q X
+" <
 
 ""
 " @section Perltidy, perltidy
@@ -83,8 +98,6 @@ set cpoptions&vim
 
 " K looks in more locations for help    {{{1
 
-""
-" @setting keywordprg
 " Change |K| by changing value of 'keywordprg'. Alter default behaviour of
 " looking in function help:
 " >
