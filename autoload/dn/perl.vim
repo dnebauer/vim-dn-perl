@@ -265,7 +265,7 @@ function! dn#perl#tidy(...) abort
     " give feedback because reporting delayed till after tidying
     redraw | echo 'Tidying...'
 	" change to filedir if it isn't cwd
-	let l:cwd = getcwd() . '/'
+	let l:cwd = getcwd()
 	let l:path = dn#util#getFileDir()
 	if l:cwd !=# l:path
 		try
@@ -332,7 +332,7 @@ function! dn#perl#critic(severity, ...)
     redraw | echo l:msg
 	" change to filedir if it isn't cwd
 	let l:path = dn#util#getFileDir()
-	let l:cwd = getcwd() . '/'
+	let l:cwd = getcwd()
 	if l:cwd !=# l:path
 		try
 			silent execute 'lcd' l:path
