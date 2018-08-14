@@ -37,8 +37,7 @@ endfunction
 ""
 " Run custom perlcritic plugin script (see @section(perlcritic)) with
 " {severity} level 1, 2, 3, 4, or 5. Runs @function(dn#perl#critic).
-command! -buffer -nargs=1 -complete=customlist,s:severity_completion Critic
-            \ call dn#perl#critic(<args>)
+command! -buffer -nargs=1 -complete=customlist,s:severity_completion Critic call dn#perl#critic(<args>)
 " }}}1
 
 " Control statements    {{{1
