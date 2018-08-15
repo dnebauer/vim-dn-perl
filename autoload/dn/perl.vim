@@ -177,12 +177,12 @@ endfunction
 " * 1: Brutal
 " @throws InvalidSeverity if invalid severity level provided
 function! s:severity_verb(level) abort
-    let l:type = type(a:level)
     " convert string to integer (|Number|)
-    let l:level = (l:type == type('')) ? str2nr(split(a:level, '\zs')[0])
-                \                      : a:level
+    let l:level = (type(a:level) == type(''))
+                \ ? str2nr(split(a:level, '\zs')[0])
+                \ : a:level
     " exit if not now an integer (|Number|)
-    if l:type != type(0)  " started as type other than string or integer
+    if type(l:level) != type(0)  " started as type other than integer|string
         throw 'ERROR(InvalidSeverity): Severity level must be integer|string'
     endif
     " now check that integer is in range 1..5
