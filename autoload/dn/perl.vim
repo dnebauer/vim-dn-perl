@@ -365,22 +365,9 @@ function! dn#perl#tidy(...) abort
     " give feedback because reporting delayed till after tidying
     redraw | echo 'Tidying...'
 	" change to filedir if it isn't cwd
-	let l:cwd = getcwd()
-	let l:path = dn#util#getFileDir()
-	if l:cwd !=# l:path
-		try
-			silent execute 'lcd' l:path
-		catch
-            echon 'error!'
-			let l:msg = 'Fatal error: Unable to change to the current' .
-                        \ "document's directory:\n"
-                        \ . "'" . l:path . "'.\n"
-                        \ . 'Aborting.'
-			call dn#util#error(l:msg)
-            if l:insert | call dn#util#insertMode(1) | endif
-			return
-		endtry
-	endif
+    try   | call s:cd_to_current_doc_dir()
+    catch | if l:insert | call dn#util#insertMode(1) | endif | return
+    endtry
     " save file to be sure we operate on current version of it
     silent execute 'update'
     " time to tidy
