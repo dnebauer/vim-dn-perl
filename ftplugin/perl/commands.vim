@@ -41,7 +41,7 @@ endfunction
 ""
 " Run custom perlcritic plugin script (see @section(perlcritic)) with
 " {severity} level |Number| in the range 1..5, or any |String| starting with a
-" digit in the range 1..5.  Has |:command-completion| with the following
+" digit in the range 1..5. Has |:command-completion| with the following
 " values:
 " * 5=gentle
 " * 4=stern

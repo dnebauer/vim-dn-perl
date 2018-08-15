@@ -15,10 +15,12 @@ set cpoptions&vim
 ""
 " @section Introduction,  intro
 " @order intro config perltidy perlcritic commands mappings functions
-" A filetype plugin providing auxiliary perl support. All functions have the
-" prefix "#dn#perl". Provides custom versions of @section(perltidy) and
-" @section(perlcritic) which can be called using @section(commands) and
-" @section(mappings). The @plugin(name) plugin requires the |dn-utils| plugin.
+" An auxiliary perl5 plugin providing:
+" * custom version of the @section(perltidy) script
+" * custom version of the @section(perlcritic) script
+" * customised K help.
+"
+" Requires the |dn-utils| plugin.
 "
 " @subsection K Help
 "
@@ -38,11 +40,11 @@ set cpoptions&vim
 ""
 " @section Perltidy, perltidy
 " Perl::Tidy is a perl module that parses and beautifies perl source code.
-" The Perl::Tidy module provides a convenience script called "perltidy",
-" but it does not provide support for the "method" keyword. This @plugin(name) plugin
-" includes a custom version of "perltidy" which supports this keyword and is configured to save a backup of the current file with a
-" ".bak" extension before beautifying it. It has the following
-" dependencies:
+" The Perl::Tidy module provides a convenience script called "perltidy", but
+" it does not provide support for the "method" keyword. This @plugin(name)
+" plugin includes a custom version of "perltidy" which supports this keyword
+" and is configured to save a backup of the current file with a ".bak"
+" extension before beautifying it. It has the following dependencies:
 " * Cwd
 " * File::MimeInfo::Magic
 " * Function::Parameters
@@ -57,9 +59,10 @@ set cpoptions&vim
 " * Types::Standard
 " * version.
 " 
-" The custom perltidy script can be run using the function
-" @function(dn#perl#tidy), command @command(Tidy), and @section(mapping)
-" "<Leader>t", usually "\t", in |Insert-mode| and |Normal-mode|.
+" The custom perltidy script can be run using:
+" * function @function(dn#perl#tidy)
+" * command @command(Tidy)
+" * @section(mapping) "<Leader>t", usually "\t".
 
 ""
 " @section Perlcritic, perlcritic
@@ -87,10 +90,10 @@ set cpoptions&vim
 " * Types::Standard
 " * version.
 " 
-" The custom perlcritic script can be run using the function
-" @function(dn#perl#critic), command @command(Critic), and @section(mapping)s
-" "<Leader>c1" to "<Leader>c5", usually "\c1" to "\c5", in |Insert-mode| and
-" |Normal-mode|.
+" The custom perlcritic script can be run using:
+" * function @function(dn#perl#critic)
+" * command @command(Critic)
+" * @section(mapping)s "<Leader>c1" to "<Leader>c5", usually "\c1" to "\c5".
 
 " }}}1
 

@@ -13,10 +13,12 @@ CONTENTS                                                    *dn-perl-contents*
 ==============================================================================
 INTRODUCTION                                                   *dn-perl-intro*
 
-A filetype plugin providing auxiliary perl support. All functions have the
-prefix "#dn#perl". Provides custom versions of |dn-perl-perltidy| and
-|dn-perl-perlcritic| which can be called using |dn-perl-commands| and
-|dn-perl-mappings|. The dn-perl plugin requires the |dn-utils| plugin.
+An auxiliary perl5 plugin providing:
+  * custom version of the |dn-perl-perltidy| script
+  * custom version of the |dn-perl-perlcritic| script
+  * customised K help.
+
+Requires the |dn-utils| plugin.
 
 K HELP
 
@@ -55,9 +57,10 @@ it. It has the following dependencies:
   * Types::Standard
   * version.
 
-The custom perltidy script can be run using the function |dn#perl#tidy()|,
-command |:Tidy|, and |dn-perl-mapping| "<Leader>t", usually "\t", in
-|Insert-mode| and |Normal-mode|.
+The custom perltidy script can be run using:
+  * function |dn#perl#tidy()|
+  * command |:Tidy|
+  * |dn-perl-mapping| "<Leader>t", usually "\t".
 
 ==============================================================================
 PERLCRITIC                                                *dn-perl-perlcritic*
@@ -85,9 +88,10 @@ custom version of "perlcritic" which does. It has the following dependences:
   * Types::Standard
   * version.
 
-The custom perlcritic script can be run using the function |dn#perl#critic()|,
-command |:Critic|, and |dn-perl-mapping|s "<Leader>c1" to "<Leader>c5",
-usually "\c1" to "\c5", in |Insert-mode| and |Normal-mode|.
+The custom perlcritic script can be run using:
+  * function |dn#perl#critic()|
+  * command |:Critic|
+  * |dn-perl-mapping|s "<Leader>c1" to "<Leader>c5", usually "\c1" to "\c5".
 
 ==============================================================================
 COMMANDS                                                    *dn-perl-commands*
@@ -99,7 +103,7 @@ COMMANDS                                                    *dn-perl-commands*
 :[N]Critic {severity}                                                *:Critic*
   Run custom perlcritic plugin script (see |dn-perl-perlcritic|) with
   {severity} level |Number| in the range 1..5, or any |String| starting with a
-  digit in the range 1..5.  Has |:command-completion| with the following
+  digit in the range 1..5. Has |:command-completion| with the following
   values:
     * 5=gentle
     * 4=stern
@@ -144,12 +148,6 @@ MAPPINGS                                                    *dn-perl-mappings*
 ==============================================================================
 FUNCTIONS                                                  *dn-perl-functions*
 
-dn#perl#tidy([insert])                                        *dn#perl#tidy()*
-  Runs custom version of perltidy provided by plugin (see |dn-perl-Perltidy|).
-  Prints feedback provided by perltidy. The option [insert] indicates whether
-  or not this function was called from |Insert-mode|.
-  [insert] is false if omitted.
-
 dn#perl#critic({severity}, [insert])                        *dn#perl#critic()*
   Runs custom version of perlcritic provided by plugin (see
   |dn-perl-Perlcritic|). Prints feedback provided by perlcritic. The
@@ -157,6 +155,12 @@ dn#perl#critic({severity}, [insert])                        *dn#perl#critic()*
   the range 1..5, or a |String| whose first character is a digit in the range
   1..5. The option [insert] indicates whether or not this function was called
   from |Insert-mode|.
+  [insert] is false if omitted.
+
+dn#perl#tidy([insert])                                        *dn#perl#tidy()*
+  Runs custom version of perltidy provided by plugin (see |dn-perl-Perltidy|).
+  Prints feedback provided by perltidy. The option [insert] indicates whether
+  or not this function was called from |Insert-mode|.
   [insert] is false if omitted.
 
 
