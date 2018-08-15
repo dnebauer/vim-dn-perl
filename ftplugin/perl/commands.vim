@@ -50,7 +50,7 @@ endfunction
 " * 1=brutal
 " Runs @function(dn#perl#critic).
 command! -buffer -nargs=1 -complete=customlist,s:severity_completion Critic
-            \ call dn#perl#critic(<args>)
+            \ call dn#perl#critic(<q-args>)
 " }}}1
 
 " Control statements    {{{1
