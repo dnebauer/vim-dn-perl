@@ -166,6 +166,32 @@ function! s:critic_path() abort
     let s:critic = l:critic
 endfunction
 
+" s:cd_to_current_doc_dir()    {{{1
+
+""
+" @private
+" Change to the directory of the current file if it is not already the current
+" working directory. Insert-mode|. Displays an error message and throws an
+" error if |:lcd| command fails.
+" @throws LcdFailed if unable to cd to current file directory
+function! s:cd_to_current_doc_dir() abort
+	let l:cwd = getcwd()
+	let l:path = dn#util#getFileDir()
+	if l:cwd !=# l:path
+		try
+			silent execute 'lcd' l:path
+		catch
+            echon 'error!'
+			let l:msg = 'Fatal error: Unable to change to the current' .
+                        \ "document's directory:\n"
+                        \ . "'" . l:path . "'.\n"
+                        \ . 'Aborting.'
+			call dn#util#error(l:msg)
+			throw 'ERROR(LcdFailed): Unable to cd to file directory'
+		endtry
+	endif
+endfunction
+
 " s:intify_severity_string(severity)     {{{1
 
 ""
@@ -252,21 +278,6 @@ endfunction
 
 " }}}1
 
-" Private functions
-
-" dn#perl#severity_completion(arg, line, pos)    {{{1
-
-""
-" @private
-" Custom command completion for severity values. Accepts the required
-" arguments of {arg}, {line}, and {pos} although they are not used, and
-" returns a |List| of severity values 1..5 (see
-" |:command-completion-customlist|).
-function! dn#perl#severity_completion(arg, line, pos)
-    return [5, 4, 3, 2, 1]
-endfunction
-" }}}1
-
 " Public functions
 
 " dn#perl#critic(severity, [insert])    {{{1
@@ -280,7 +291,7 @@ endfunction
 " 1..5. The option [insert] indicates whether or not this function was called
 " from |Insert-mode|.
 " @default insert=false
-function! dn#perl#critic(severity, ...)
+function! dn#perl#critic(severity, ...) abort
     if s:utils_missing() | return | endif  " requires dn-utils plugin
 	" variables
     let l:insert = (a:0 && a:1)
@@ -300,22 +311,9 @@ function! dn#perl#critic(severity, ...)
                 \ . ' critique (severity ' . l:severity . ')... '
     redraw | echo l:msg
 	" change to filedir if it isn't cwd
-	let l:path = dn#util#getFileDir()
-	let l:cwd = getcwd()
-	if l:cwd !=# l:path
-		try
-			silent execute 'lcd' l:path
-		catch
-            echon 'error!'
-			let l:msg = 'Fatal error: Unable to change to the current' .
-                        \ "document's directory:\n"
-                        \ . "'" . l:path . "'.\n"
-                        \ . 'Aborting.'
-			call dn#util#error(l:msg)
-            if l:insert | call dn#util#insertMode(1) | endif
-			return
-		endtry
-	endif
+    try   | call s:cd_to_current_doc_dir()
+    catch | if l:insert | call dn#util#insertMode(1) | endif | return
+    endtry
     " save file to be sure we operate on current version of it
     silent execute 'update'
     " time to criticise
@@ -373,6 +371,7 @@ function! dn#perl#tidy(...) abort
 		try
 			silent execute 'lcd' l:path
 		catch
+            echon 'error!'
 			let l:msg = 'Fatal error: Unable to change to the current' .
                         \ "document's directory:\n"
                         \ . "'" . l:path . "'.\n"
