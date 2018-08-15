@@ -146,21 +146,39 @@ if !exists('s:critic') | let s:critic = v:null | endif
 
 " Script functions
 
-" s:utils_missing()    {{{1
+" s:critic_path()    {{{1
 
 ""
 " @private
-" Checks whether the dn-utils plugin us available. If it is not, displays an
-" error message. Returns a bool (true=missing, false=available). Designed to
-" be used as:
-" >
-"   if s:utils_missing | return | endif
-" <
-function! s:utils_missing() abort
-    silent! call dn#util#rev()  " load function if available
-    if !(exists('*dn#util#rev') && dn#util#rev() =~? '\v^\d{8,}$')
-        call dn#util#error('Cannot locate dn-utils plugin: aborting...')
+" Returns path to custom perlcritic script provided by this plugin. The first
+" time it is run this function locates the custom perlcritic script and stores
+" the location in a script variable (s:critic) so it is available for future
+" calls to this function.
+" @throws NoCritic if cannot locate custom perlcritic script
+function! s:critic_path() abort
+    " return previously located path
+    if s:critic isnot v:null | return s:critic | endif
+    " find path if not previously found
+    let l:critic = dn#util#getRtpFile(s:critic_name)
+    if l:critic ==? ''  " could not locate custom perlcritic
+        throw 'ERROR(NoCritic): Cannot locate custom perlcritic script'
     endif
+    let s:critic = l:critic
+endfunction
+
+" s:intify_severity_string(severity)     {{{1
+
+""
+" Process {security} level value. If it is a string, take the first character,
+" convert it to an integer and return it. If it is any other variable type,
+" return unchanged.
+function! s:intify_severity_string(severity) abort
+    if type(a:severity) != type('') | return a:severity | endif
+    " remove any quote marks
+    let l:severity = substitute(a:severity, '[''"]', '', 'g')
+    " take first char, convert to number, and return it
+    " - has the effect of converting non-digit to zero, which is not valid
+    return str2nr(split(l:severity, '\zs')[0])
 endfunction
 
 " s:severity_verb(level)    {{{1
@@ -195,26 +213,6 @@ function! s:severity_verb(level) abort
     return l:verbs[a:level]
 endfunction
 
-" s:critic_path()    {{{1
-
-""
-" @private
-" Returns path to custom perlcritic script provided by this plugin. The first
-" time it is run this function locates the custom perlcritic script and stores
-" the location in a script variable (s:critic) so it is available for future
-" calls to this function.
-" @throws NoCritic if cannot locate custom perlcritic script
-function! s:critic_path() abort
-    " return previously located path
-    if s:critic isnot v:null | return s:critic | endif
-    " find path if not previously found
-    let l:critic = dn#util#getRtpFile(s:critic_name)
-    if l:critic ==? ''  " could not locate custom perlcritic
-        throw 'ERROR(NoCritic): Cannot locate custom perlcritic script'
-    endif
-    let s:critic = l:critic
-endfunction
-
 " s:tidy_path()    {{{1
 
 ""
@@ -234,6 +232,24 @@ function! s:tidy_path() abort
     endif
     let s:tidy = l:tidy
 endfunction
+
+" s:utils_missing()    {{{1
+
+""
+" @private
+" Checks whether the dn-utils plugin us available. If it is not, displays an
+" error message. Returns a bool (true=missing, false=available). Designed to
+" be used as:
+" >
+"   if s:utils_missing | return | endif
+" <
+function! s:utils_missing() abort
+    silent! call dn#util#rev()  " load function if available
+    if !(exists('*dn#util#rev') && dn#util#rev() =~? '\v^\d{8,}$')
+        call dn#util#error('Cannot locate dn-utils plugin: aborting...')
+    endif
+endfunction
+
 " }}}1
 
 " Private functions
@@ -333,8 +349,7 @@ function! dn#perl#critic(severity, ...)
     endtry
     " if severity is string, take numeric value of first char
     let l:severity = (type(a:severity) == type(''))
-                \  ? str2nr(split(a:severity, '\zs')[0])
-                \  : a:severity
+                \  ? s:intify_severity_string(a:severity) : a:severity
     " s:severity_verb checks param, throws InvalidSeverity if invalid
     try   | let l:severity_verb = s:severity_verb(l:severity)
     catch | echoerr 'Severity must be number|string with first char in 1..5'
