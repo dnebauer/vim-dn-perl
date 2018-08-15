@@ -167,32 +167,32 @@ endfunction
 
 ""
 " @private
-" Provides verb for severity {level}. The {level} is a |Number| or |String|
-" whose first, or only, character must be in range 1..5. Each {level} has a
-" corresponding one word |String| verb which is returned:
+" Provides verb for severity {level}. The {level} must be a |Number| (integer)
+" in the range 1..5. Each {level} has a corresponding one word |String| verb
+" which is returned:
 " * 5: Gentle
 " * 4: Stern
 " * 3: Harsh
 " * 2: Cruel
 " * 1: Brutal
+" Note that the error messages allow for the possibility that the original
+" severity was a string starting with a character in the range 1..5, and which
+" was converted by the calling function to a single digit integer before
+" calling this function.
 " @throws InvalidSeverity if invalid severity level provided
 function! s:severity_verb(level) abort
-    " convert string to integer (|Number|)
-    let l:level = (type(a:level) == type(''))
-                \ ? str2nr(split(a:level, '\zs')[0])
-                \ : a:level
-    " exit if not now an integer (|Number|)
-    if type(l:level) != type(0)  " started as type other than integer|string
+    " exit if not an integer (|Number|)
+    if type(a:level) != type(0)  " started as type other than integer|string
         throw 'ERROR(InvalidSeverity): Severity level must be integer|string'
     endif
     " now check that integer is in range 1..5
-    if l:level < 1 || l:level > 5
+    if a:level < 1 || a:level > 5
         throw 'ERROR(InvalidSeverity): Severity level must start with 1..5'
     endif
     " now return corresponding verb
     let l:verbs = {5: 'Gentle', 4: 'Stern',
                 \  3: 'Harsh',  2: 'Cruel', 1: 'Brutal'}
-    return l:verbs[l:level]
+    return l:verbs[a:level]
 endfunction
 
 " s:critic_path()    {{{1
@@ -331,14 +331,18 @@ function! dn#perl#critic(severity, ...)
     try   | let l:critic = s:critic_path()
     catch | echoerr 'Cannot locate custom perlcritic plugin script'
     endtry
+    " if severity is string, take numeric value of first char
+    let l:severity = (type(a:severity) == type(''))
+                \  ? str2nr(split(a:severity, '\zs')[0])
+                \  : a:severity
     " s:severity_verb checks param, throws InvalidSeverity if invalid
-    try   | let l:severity_verb = s:severity_verb(a:severity)
+    try   | let l:severity_verb = s:severity_verb(l:severity)
     catch | echoerr 'Severity must be number|string with first char in 1..5'
     endtry
     let l:file = expand('%')
     " give feedback because reporting delayed till after analysis
     let l:msg =   l:severity_verb
-                \ . ' critique (severity ' . a:severity . ')... '
+                \ . ' critique (severity ' . l:severity . ')... '
     redraw | echo l:msg
 	" change to filedir if it isn't cwd
 	let l:path = dn#util#getFileDir()
@@ -362,7 +366,7 @@ function! dn#perl#critic(severity, ...)
     " time to criticise
     " - use of shellescape on l:cmd causes failure with command string
     "   wrapped in single quotes and interpreted as a single command
-    let l:cmd = l:critic . ' ' . l:file . ' --severity ' . a:severity
+    let l:cmd = l:critic . ' ' . l:file . ' --severity ' . l:severity
     silent let l:output = systemlist(l:cmd)
     " do not check for v:shell_error because perlcritic has
     " previously exited with this error even when successful:
