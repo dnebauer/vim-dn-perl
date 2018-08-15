@@ -269,66 +269,6 @@ endfunction
 
 " Public functions
 
-" dn#perl#tidy([insert])    {{{1
-
-""
-" @public
-" Runs custom version of perltidy provided by plugin (see @section(Perltidy)).
-" Prints feedback provided by perltidy. The option [insert] indicates whether
-" or not this function was called from |Insert-mode|.
-" @default insert=false
-function! dn#perl#tidy(...) abort
-    if s:utils_missing() | return | endif  " requires dn-utils plugin
-	" variables
-    let l:insert = (a:0 && a:1)
-    try   | let l:tidy = s:tidy_path()
-    catch | echoerr 'Cannot locate custom perltidy plugin script'
-    endtry
-    let l:file = expand('%')
-    " give feedback because reporting delayed till after tidying
-    redraw | echo 'Tidying...'
-	" change to filedir if it isn't cwd
-	let l:cwd = getcwd()
-	let l:path = dn#util#getFileDir()
-	if l:cwd !=# l:path
-		try
-			silent execute 'lcd' l:path
-		catch
-			let l:msg = 'Fatal error: Unable to change to the current' .
-                        \ "document's directory:\n"
-                        \ . "'" . l:path . "'.\n"
-                        \ . 'Aborting.'
-			call dn#util#error(l:msg)
-            if l:insert | call dn#util#insertMode(1) | endif
-			return
-		endtry
-	endif
-    " save file to be sure we operate on current version of it
-    silent execute 'update'
-    " time to tidy
-    " - use of shellescape on l:cmd causes failure with command string
-    "   wrapped in single quotes and interpreted as a single command
-    let l:cmd = l:tidy . ' ' . l:file
-    silent let l:output = systemlist(l:cmd)
-    " must reload file to display changes to underlying *file*
-    " redraw is required here otherwise refresh does not occur
-    "   until after list output
-    silent! execute 'edit'
-    redraw
-    " do not check for v:shell_error because dn-perltidy always exits
-    " with an error code - see dn-perltidy man page for details
-    if type(l:output) == type('')  " error
-        let l:msg = "Command '" . l:cmd . "' failed"
-        call dn#util#error(l:msg)
-        let l:msg = "Shell feedback: '" . l:output . "'"
-        call dn#util#error(l:msg)
-    else  " assume succeeded so have a List
-        for l:item in l:output | echo l:item | endfor
-        echo 'Tidying done'
-    endif
-    if l:insert | call dn#util#insertMode(1) | endif
-endfunction
-
 " dn#perl#critic(severity, [insert])    {{{1
 
 ""
@@ -404,6 +344,66 @@ function! dn#perl#critic(severity, ...)
         echon 'error!'
         call dn#util#error('Unexpected data type for perlcritic feedback')
         return
+    endif
+    if l:insert | call dn#util#insertMode(1) | endif
+endfunction
+
+" dn#perl#tidy([insert])    {{{1
+
+""
+" @public
+" Runs custom version of perltidy provided by plugin (see @section(Perltidy)).
+" Prints feedback provided by perltidy. The option [insert] indicates whether
+" or not this function was called from |Insert-mode|.
+" @default insert=false
+function! dn#perl#tidy(...) abort
+    if s:utils_missing() | return | endif  " requires dn-utils plugin
+	" variables
+    let l:insert = (a:0 && a:1)
+    try   | let l:tidy = s:tidy_path()
+    catch | echoerr 'Cannot locate custom perltidy plugin script'
+    endtry
+    let l:file = expand('%')
+    " give feedback because reporting delayed till after tidying
+    redraw | echo 'Tidying...'
+	" change to filedir if it isn't cwd
+	let l:cwd = getcwd()
+	let l:path = dn#util#getFileDir()
+	if l:cwd !=# l:path
+		try
+			silent execute 'lcd' l:path
+		catch
+			let l:msg = 'Fatal error: Unable to change to the current' .
+                        \ "document's directory:\n"
+                        \ . "'" . l:path . "'.\n"
+                        \ . 'Aborting.'
+			call dn#util#error(l:msg)
+            if l:insert | call dn#util#insertMode(1) | endif
+			return
+		endtry
+	endif
+    " save file to be sure we operate on current version of it
+    silent execute 'update'
+    " time to tidy
+    " - use of shellescape on l:cmd causes failure with command string
+    "   wrapped in single quotes and interpreted as a single command
+    let l:cmd = l:tidy . ' ' . l:file
+    silent let l:output = systemlist(l:cmd)
+    " must reload file to display changes to underlying *file*
+    " redraw is required here otherwise refresh does not occur
+    "   until after list output
+    silent! execute 'edit'
+    redraw
+    " do not check for v:shell_error because dn-perltidy always exits
+    " with an error code - see dn-perltidy man page for details
+    if type(l:output) == type('')  " error
+        let l:msg = "Command '" . l:cmd . "' failed"
+        call dn#util#error(l:msg)
+        let l:msg = "Shell feedback: '" . l:output . "'"
+        call dn#util#error(l:msg)
+    else  " assume succeeded so have a List
+        for l:item in l:output | echo l:item | endfor
+        echo 'Tidying done'
     endif
     if l:insert | call dn#util#insertMode(1) | endif
 endfunction
