@@ -98,7 +98,15 @@ COMMANDS                                                    *dn-perl-commands*
 
 :[N]Critic {severity}                                                *:Critic*
   Run custom perlcritic plugin script (see |dn-perl-perlcritic|) with
-  {severity} level 1, 2, 3, 4, or 5. Runs |dn#perl#critic()|.
+  {severity} level |Number| in the range 1..5, or any |String| starting with a
+  digit in the range 1..5.  Has |:command-completion| with the following
+  values:
+    * 5=gentle
+    * 4=stern
+    * 3=harsh
+    * 2=cruel
+    * 1=brutal
+  Runs |dn#perl#critic()|.
 
 ==============================================================================
 MAPPINGS                                                    *dn-perl-mappings*
@@ -145,8 +153,10 @@ dn#perl#tidy([insert])                                        *dn#perl#tidy()*
 dn#perl#critic({severity}, [insert])                        *dn#perl#critic()*
   Runs custom version of perlcritic provided by plugin (see
   |dn-perl-Perlcritic|). Prints feedback provided by perlcritic. The
-  {severity} determines the level of analysis. The option [insert] indicates
-  whether or not this function was called from |Insert-mode|.
+  {severity} determines the level of analysis, and can either be a |Number| in
+  the range 1..5, or a |String| whose first character is a digit in the range
+  1..5. The option [insert] indicates whether or not this function was called
+  from |Insert-mode|.
   [insert] is false if omitted.
 
 

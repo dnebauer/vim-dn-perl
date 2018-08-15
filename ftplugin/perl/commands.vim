@@ -25,20 +25,30 @@ command! -buffer -nargs=0 Tidy call dn#perl#tidy()
 
 ""
 " @private
-" Custom command completion for severity values. Accepts the required
-" arguments of {arg}, {line}, and {pos} although they are not used, and
-" returns a |List| of severity values 1..5 (see
-" |:command-completion-customlist|).
+" Custom command completion for severity values, accepting the required
+" arguments of {arg}, {line}, and {pos} although they are not used (see
+" |:command-completion-customlist|). Returns a |List| of severity values:
+" * 5=gentle
+" * 4=stern
+" * 3=harsh
+" * 2=cruel
+" * 1=brutal
 function! s:severity_completion(arg, line, pos)
-    "return [5, 4, 3, 2, 1]
-    "return ['5', '4', '3', '2', '1']
     return ['5=gentle', '4=stern', '3=harsh', '2=cruel', '1=brutal']
 endfunction
 " }}}2
 
 ""
 " Run custom perlcritic plugin script (see @section(perlcritic)) with
-" {severity} level 1, 2, 3, 4, or 5. Runs @function(dn#perl#critic).
+" {severity} level |Number| in the range 1..5, or any |String| starting with a
+" digit in the range 1..5.  Has |:command-completion| with the following
+" values:
+" * 5=gentle
+" * 4=stern
+" * 3=harsh
+" * 2=cruel
+" * 1=brutal
+" Runs @function(dn#perl#critic).
 command! -buffer -nargs=1 -complete=customlist,s:severity_completion Critic
             \ call dn#perl#critic(<args>)
 " }}}1

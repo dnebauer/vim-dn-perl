@@ -167,9 +167,9 @@ endfunction
 
 ""
 " @private
-" Provides verb for severity {level}. The {level} is an integer |Number| from
-" 1 to 5. Each {level} has a corresponding one word |String| verb which is
-" returned:
+" Provides verb for severity {level}. The {level} is a |Number| or |String|
+" whose first, or only, character must be in range 1..5. Each {level} has a
+" corresponding one word |String| verb which is returned:
 " * 5: Gentle
 " * 4: Stern
 " * 3: Harsh
@@ -177,15 +177,22 @@ endfunction
 " * 1: Brutal
 " @throws InvalidSeverity if invalid severity level provided
 function! s:severity_verb(level) abort
-    if type(a:level) != type(0)
-        throw 'ERROR(InvalidSeverity): Severity level must be integer'
+    let l:type = type(a:level)
+    " convert string to integer (|Number|)
+    let l:level = (l:type == type('')) ? str2nr(split(a:level, '\zs')[0])
+                \                      : a:level
+    " exit if not now an integer (|Number|)
+    if l:type != type(0)  " started as type other than string or integer
+        throw 'ERROR(InvalidSeverity): Severity level must be integer|string'
     endif
-    if a:level < 1 || a:level > 5
-        throw 'ERROR(InvalidSeverity): Severity level must be 1..5'
+    " now check that integer is in range 1..5
+    if l:level < 1 || l:level > 5
+        throw 'ERROR(InvalidSeverity): Severity level must start with 1..5'
     endif
+    " now return corresponding verb
     let l:verbs = {5: 'Gentle', 4: 'Stern',
                 \  3: 'Harsh',  2: 'Cruel', 1: 'Brutal'}
-    return l:verbs[a:level]
+    return l:verbs[l:level]
 endfunction
 
 " s:critic_path()    {{{1
@@ -312,8 +319,10 @@ endfunction
 " @public
 " Runs custom version of perlcritic provided by plugin (see
 " @section(Perlcritic)). Prints feedback provided by perlcritic. The
-" {severity} determines the level of analysis. The option [insert] indicates
-" whether or not this function was called from |Insert-mode|.
+" {severity} determines the level of analysis, and can either be a |Number| in
+" the range 1..5, or a |String| whose first character is a digit in the range
+" 1..5. The option [insert] indicates whether or not this function was called
+" from |Insert-mode|.
 " @default insert=false
 function! dn#perl#critic(severity, ...)
     if s:utils_missing() | return | endif  " requires dn-utils plugin
@@ -322,8 +331,9 @@ function! dn#perl#critic(severity, ...)
     try   | let l:critic = s:critic_path()
     catch | echoerr 'Cannot locate custom perlcritic plugin script'
     endtry
+    " s:severity_verb checks param, throws InvalidSeverity if invalid
     try   | let l:severity_verb = s:severity_verb(a:severity)
-    catch | echoerr 'Severity must be integer from 1 to 5'
+    catch | echoerr 'Severity must be number|string with first char in 1..5'
     endtry
     let l:file = expand('%')
     " give feedback because reporting delayed till after analysis
