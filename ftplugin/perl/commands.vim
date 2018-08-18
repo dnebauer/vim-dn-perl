@@ -34,7 +34,9 @@ command! -buffer -nargs=0 Tidy call dn#perl#tidy()
 " * 2=cruel
 " * 1=brutal
 function! s:severity_completion(arg, line, pos)
-    return ['5=gentle', '4=stern', '3=harsh', '2=cruel', '1=brutal']
+    let l:levels = ['5=gentle', '4=stern', '3=harsh', '2=cruel', '1=brutal']
+    let l:matches = filter(l:levels, 'v:val =~ "' . a:arg . '"')
+    return l:matches
 endfunction
 " }}}2
 
