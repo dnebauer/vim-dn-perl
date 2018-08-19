@@ -21,7 +21,7 @@ command! -buffer -nargs=0 Tidy call dn#perl#tidy()
 
 " Critic <severity> - run perlcritic    {{{1
 
-" s:severity_completion(arg, line, pos)    {{{2
+" s:completeCriticSeverity(arg, line, pos)    {{{2
 
 ""
 " @private
@@ -34,8 +34,8 @@ command! -buffer -nargs=0 Tidy call dn#perl#tidy()
 " * 2=cruel
 " * 1=brutal
 function! s:severity_completion(arg, line, pos)
-    let l:levels = ['5=gentle', '4=stern', '3=harsh', '2=cruel', '1=brutal']
-    return filter(l:levels, {idx, val -> val =~ a:arg})
+    let l:args = ['5=gentle', '4=stern', '3=harsh', '2=cruel', '1=brutal']
+    return filter(l:args, {idx, val -> val =~ a:arg})
 endfunction
 " }}}2
 
@@ -50,7 +50,7 @@ endfunction
 " * 2=cruel
 " * 1=brutal
 " Runs @function(dn#perl#critic).
-command! -buffer -nargs=1 -complete=customlist,s:severity_completion Critic
+command! -buffer -nargs=1 -complete=customlist,s:completeCriticSeverity Critic
             \ call dn#perl#critic(<q-args>)
 " }}}1
 
