@@ -33,7 +33,7 @@ command! -buffer -nargs=0 Tidy call dn#perl#tidy()
 " * 3=harsh
 " * 2=cruel
 " * 1=brutal
-function! s:severity_completion(arg, line, pos)
+function! s:completeCriticSeverity(arg, line, pos)
     let l:args = ['5=gentle', '4=stern', '3=harsh', '2=cruel', '1=brutal']
     return filter(l:args, {idx, val -> val =~ a:arg})
 endfunction
